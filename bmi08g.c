@@ -556,7 +556,7 @@ int8_t bmi08g_set_power_mode(struct bmi08x_dev *dev)
 int8_t bmi08g_get_data(struct bmi08x_sensor_data *gyro, struct bmi08x_dev *dev)
 {
     int8_t rslt;
-    uint8_t data[6];
+    uint8_t data[8];
     uint8_t lsb, msb;
     uint16_t msblsb;
 
@@ -567,22 +567,22 @@ int8_t bmi08g_get_data(struct bmi08x_sensor_data *gyro, struct bmi08x_dev *dev)
     if ((rslt == BMI08X_OK) && (gyro != NULL))
     {
         /* read gyro sensor data */
-        rslt = bmi08g_get_regs(BMI08X_REG_GYRO_X_LSB, data, 6, dev);
+        rslt = bmi08g_get_regs(BMI08X_REG_GYRO_CHIP_ID, data, 8, dev);
 
-        if (rslt == BMI08X_OK)
+        if (data[0] == BMI08X_GYRO_CHIP_ID && rslt == BMI08X_OK)
         {
-            lsb = data[0];
-            msb = data[1];
-            msblsb = (msb << 8) | lsb;
-            gyro->x = (int16_t)msblsb; /* Data in X axis */
-
             lsb = data[2];
             msb = data[3];
             msblsb = (msb << 8) | lsb;
-            gyro->y = (int16_t)msblsb; /* Data in Y axis */
+            gyro->x = (int16_t)msblsb; /* Data in X axis */
 
             lsb = data[4];
             msb = data[5];
+            msblsb = (msb << 8) | lsb;
+            gyro->y = (int16_t)msblsb; /* Data in Y axis */
+
+            lsb = data[6];
+            msb = data[7];
             msblsb = (msb << 8) | lsb;
             gyro->z = (int16_t)msblsb; /* Data in Z axis */
         }

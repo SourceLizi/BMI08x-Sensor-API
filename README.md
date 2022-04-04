@@ -1,3 +1,20 @@
+
+
+# RoboMaster开发板C型 - BMI088官方驱动
+
+## 移植方法
+
+1. 将drv_bmi088.c,drv_bmi088.h,bmi08a.c,bmi08g.c,bmi08x.h,bmi08x_defs.h这7个文件复制到项目中的某个目录下
+2. 在IMU代码模块中指定包含bmi08x.h和drv_bmi088.h即可
+
+初始化过程以及数据获取参考example文件夹下的read_sensor_data部分
+
+## 参数调整
+
+目前引脚配置已经设置为RoboMaster C板可用，但是针对每个板可能需要校准角速度计零偏和加速度计尺度因子和偏置
+
+------
+
 # BMI08X Sensor API
 
 ## Table of Contents
@@ -41,7 +58,7 @@ Update variant of bmi08x_dev to BMI088_VARIANT to use the BMI085 sensor feature
    * This header file has necessary include files,bmi08x function declarations, required to make API calls.
  - *_bmi08x_defs.h_*
    * This header file has necessary include files, macro definitions, typedefs and data structure definitions.
- 
+
 ### Sensor interfaces<a name=interface></a>
 - I2C interface
 - SPI interface  
@@ -230,7 +247,7 @@ int_config.int_pin_cfg.enable_int_pin = BMI08X_ENABLE;
 
 rslt = bmi08a_set_int_config(&int_config, &dev);
 
-	
+
 void interrupt_handler(void)
 {
 	/* ISR functionality */
